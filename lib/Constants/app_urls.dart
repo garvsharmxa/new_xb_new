@@ -101,6 +101,25 @@ class AppUrls {
   static const String getCartCount = '$baseUrl/cart/count';
 
   // ──────────────────────────────────────────────
+  // ORDER ENDPOINTS
+  // ──────────────────────────────────────────────
+
+  static const String createOrder = '$baseUrl/orders/create';
+  static const String getMyOrders = '$baseUrl/orders/my';
+  static String getOrderById(String orderId) => '$baseUrl/orders/$orderId';
+  static String updateOrderStatus(String orderId) => '$baseUrl/orders/$orderId/status';
+  static String cancelOrder(String orderId) => '$baseUrl/orders/$orderId/cancel';
+  static const String getActiveOrders = '$baseUrl/orders/active';
+  static const String getPastOrders = '$baseUrl/orders/past';
+  static String trackOrder(String orderId) => '$baseUrl/orders/$orderId/track';
+  static String getOrderReceipt(String orderId) => '$baseUrl/orders/$orderId/receipt';
+  
+  // Payment related
+  static const String createRazorpayOrder = '$baseUrl/payment/razorpay/create';
+  static const String verifyRazorpayPayment = '$baseUrl/payment/razorpay/verify';
+  static const String getPaymentStatus = '$baseUrl/payment/status';
+
+  // ──────────────────────────────────────────────
   // HELPER METHODS FOR DYNAMIC URLS
   // ──────────────────────────────────────────────
 

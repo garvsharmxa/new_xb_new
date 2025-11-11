@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../Services/Payment/RazorpayService.dart';
 import '../../Services/Notification/NotificationService.dart';
+import '../../Services/Order/OrderSimulationService.dart';
 import '../../Controller/OrderController.dart';
 import '../../Controller/CartController.dart';
 import '../../models/Order/OrderModel.dart';
@@ -37,6 +38,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   final cartController = Get.find<CartController>();
   final orderController = Get.put(OrderController());
   final notificationService = NotificationService();
+  final orderSimulation = OrderSimulationService();
   bool isProcessing = false;
 
   @override
@@ -457,6 +459,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
     // Send notification
     notificationService.showOrderPlacedNotification(orderId);
+
+    // Start order simulation (for testing - remove in production)
+    orderSimulation.startSimulation(orderId);
 
     // Show success message
     Get.snackbar(

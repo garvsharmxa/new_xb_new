@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import '../../Controller/OrderController.dart';
 import '../../models/Order/OrderModel.dart';
 import '../../Nav/BottomNav.dart';
+import '../../Services/Order/OrderSimulationService.dart';
 
 class OrderTrackingScreen extends StatefulWidget {
   final String orderId;
@@ -21,6 +22,7 @@ class OrderTrackingScreen extends StatefulWidget {
 
 class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   final orderController = Get.find<OrderController>();
+  final orderSimulation = OrderSimulationService();
 
   @override
   Widget build(BuildContext context) {
@@ -642,62 +644,96 @@ class _OrderTrackingScreenState extends State<OrderTrackingScreen> {
   }
 
   Widget _buildActionButtons(OrderModel order) {
+    final canAdvance = order.status != OrderStatus.completed && 
+                      order.status != OrderStatus.cancelled;
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: OutlinedButton.icon(
-              onPressed: () {
-                // TODO: Implement help/support
-                Get.snackbar(
-                  'Support',
-                  'Contact support at: +91 1234567890',
-                  backgroundColor: Colors.blue,
-                  colorText: Colors.white,
-                );
-              },
-              icon: const Icon(Icons.help_outline),
-              label: Text(
-                'Need Help?',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+          // Test button to advance order status (for demo purposes)
+          if (canAdvance)
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: () {
+                  orderSimulation.advanceOrderStatus(order.id);
+                },
+                icon: const Icon(Icons.fast_forward),
+                label: Text(
+                  'Advance Status (Test)',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
-              ),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: const Color(0xffC2262D),
-                side: const BorderSide(color: Color(0xffC2262D)),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: ElevatedButton.icon(
-              onPressed: () {
-                Get.offAll(() => BottomNavBar());
-              },
-              icon: const Icon(Icons.home),
-              label: Text(
-                'Go Home',
-                style: GoogleFonts.poppins(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xffC2262D),
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: Colors.orange,
+                  side: const BorderSide(color: Colors.orange),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
               ),
             ),
+          Row(
+            children: [
+              Expanded(
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    // TODO: Implement help/support
+                    Get.snackbar(
+                      'Support',
+                      'Contact support at: +91 1234567890',
+                      backgroundColor: Colors.blue,
+                      colorText: Colors.white,
+                    );
+                  },
+                  icon: const Icon(Icons.help_outline),
+                  label: Text(
+                    'Need Help?',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: const Color(0xffC2262D),
+                    side: const BorderSide(color: Color(0xffC2262D)),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Get.offAll(() => BottomNavBar());
+                  },
+                  icon: const Icon(Icons.home),
+                  label: Text(
+                    'Go Home',
+                    style: GoogleFonts.poppins(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xffC2262D),
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
