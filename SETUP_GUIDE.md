@@ -188,6 +188,16 @@ flutter pub get
 flutter run
 ```
 
+### Issue: iOS build fails with "Include of non-modular header inside framework module"
+**Solution:**
+This issue is already fixed in the Podfile. If you still encounter it:
+1. Ensure your Podfile has `BUILD_LIBRARY_FOR_DISTRIBUTION = YES` in the post_install hook
+2. Delete `ios/Pods` directory and `ios/Podfile.lock`
+3. Run `cd ios && pod install && cd ..`
+4. Run `flutter clean && flutter pub get`
+
+This error typically occurs when using Firebase with `use_frameworks!` in the Podfile. The fix enables module stability for all pods.
+
 ### Issue: API calls failing
 **Solution:**
 - Verify backend URL in `app_urls.dart`
