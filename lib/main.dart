@@ -5,12 +5,21 @@ import 'package:xb/Nav/BottomNav.dart';
 import 'Controller/BottomNavController.dart';
 import 'Controller/CartController.dart';
 import 'Controller/FavoriteController.dart';
+import 'Controller/OrderController.dart';
+import 'Services/Notification/NotificationService.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize notification service
+  await NotificationService().initialize();
+  
+  // Initialize controllers
   Get.put(CartController());
   Get.put(FavoriteController());
   Get.put(BottomNavController());
+  Get.put(OrderController());
+  
   runApp(const MyApp());
 }
 

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../../Services/Notification/NotificationService.dart';
+import '../../Notifications/NotificationsScreen.dart';
 
 class FoodAppBar extends StatelessWidget implements PreferredSizeWidget {
   final int notificationCount;
@@ -58,61 +61,68 @@ class FoodAppBar extends StatelessWidget implements PreferredSizeWidget {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: Stack(
-              children: [
-                Material(
-                  color: Colors.transparent,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(16),
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      child: const Icon(
-                        Icons.notifications_none_rounded,
-                        color: Color(0xFFC2262D),
-                        size: 35,
+            child: Obx(() {
+              final notificationService = NotificationService();
+              final count = notificationService.notificationCount.value;
+
+              return Stack(
+                children: [
+                  Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(16),
+                      onTap: () {
+                        Get.to(() => const NotificationsScreen());
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        child: const Icon(
+                          Icons.notifications_none_rounded,
+                          color: Color(0xFFC2262D),
+                          size: 35,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                if (notificationCount > 0)
-                  Positioned(
-                    right: 2,
-                    top: 2,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 6,
-                        vertical: 2,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFFFF4757), Color(0xFFFF3838)],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  if (count > 0)
+                    Positioned(
+                      right: 2,
+                      top: 2,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 6,
+                          vertical: 2,
                         ),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white, width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xFFFF4757).withOpacity(0.4),
-                            blurRadius: 8,
-                            offset: const Offset(0, 2),
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFFFF4757), Color(0xFFFF3838)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
-                        ],
-                      ),
-                      child: Text(
-                        notificationCount > 99 ? '99+' : '$notificationCount',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: -0.2,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.white, width: 2),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFFFF4757).withOpacity(0.4),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          count > 99 ? '99+' : '$count',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.2,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-              ],
-            ),
+                ],
+              );
+            }),
           ),
         ],
       ),

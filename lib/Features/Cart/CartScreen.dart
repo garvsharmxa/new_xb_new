@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../../../Controller/CartController.dart';
 import '../../../../../models/foodItems.dart';
+import '../Payment/PaymentScreen.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -826,12 +827,18 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   void _proceedToCheckout(double total) {
-    Get.snackbar(
-      'Checkout',
-      'Proceeding to payment of ₹${total.toStringAsFixed(0)}',
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+    // Navigate to payment screen
+    Get.to(() => PaymentScreen(
+      totalAmount: total,
+      subtotal: cartController.totalPrice,
+      deliveryFee: 40.0,
+      tax: cartController.totalPrice * 0.18,
+      discount: couponDiscount,
+      deliveryAddress: addresses.firstWhere(
+        (addr) => addr['type'] == selectedAddress,
+        orElse: () => {'address': 'No address selected'},
+      )['address'],
+    ));
   }
 
   @override
