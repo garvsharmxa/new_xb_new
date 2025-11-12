@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:get/get.dart';
 import '../../Controller/OrderController.dart';
 import '../../models/Order/OrderModel.dart';
-import '../Notification/NotificationService.dart';
 
 /// Service to simulate order status changes for testing
 /// In production, this would be replaced with real-time updates from backend
@@ -13,7 +12,6 @@ class OrderSimulationService {
 
   final Map<String, Timer> _activeSimulations = {};
   final orderController = Get.find<OrderController>();
-  final notificationService = NotificationService();
 
   /// Start simulating order status changes for a given order
   void startSimulation(String orderId) {
@@ -35,19 +33,15 @@ class OrderSimulationService {
       switch (order.status) {
         case OrderStatus.placed:
           nextStatus = OrderStatus.confirmed;
-          notificationService.showOrderConfirmedNotification(orderId);
           break;
         case OrderStatus.confirmed:
           nextStatus = OrderStatus.preparing;
-          notificationService.showOrderPreparingNotification(orderId);
           break;
         case OrderStatus.preparing:
           nextStatus = OrderStatus.ready;
-          notificationService.showOrderReadyNotification(orderId);
           break;
         case OrderStatus.ready:
           nextStatus = OrderStatus.completed;
-          notificationService.showOrderCompletedNotification(orderId);
           timer.cancel();
           _activeSimulations.remove(orderId);
           break;
@@ -93,19 +87,15 @@ class OrderSimulationService {
     switch (order.status) {
       case OrderStatus.placed:
         nextStatus = OrderStatus.confirmed;
-        notificationService.showOrderConfirmedNotification(orderId);
         break;
       case OrderStatus.confirmed:
         nextStatus = OrderStatus.preparing;
-        notificationService.showOrderPreparingNotification(orderId);
         break;
       case OrderStatus.preparing:
         nextStatus = OrderStatus.ready;
-        notificationService.showOrderReadyNotification(orderId);
         break;
       case OrderStatus.ready:
         nextStatus = OrderStatus.completed;
-        notificationService.showOrderCompletedNotification(orderId);
         break;
       case OrderStatus.completed:
       case OrderStatus.cancelled:

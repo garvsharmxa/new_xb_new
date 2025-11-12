@@ -6,13 +6,9 @@ import 'Controller/BottomNavController.dart';
 import 'Controller/CartController.dart';
 import 'Controller/FavoriteController.dart';
 import 'Controller/OrderController.dart';
-import 'Services/Notification/NotificationService.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Initialize notification service
-  await NotificationService().initialize();
   
   // Initialize controllers
   Get.put(CartController());
