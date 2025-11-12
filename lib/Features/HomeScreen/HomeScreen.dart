@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       drawer: Drawers(),
-      appBar: FoodAppBar(notificationCount: 3),
+      appBar: FoodAppBar(),
       body: Container(
         child: RefreshIndicator(
           color: Color(0xFFC2262D),
